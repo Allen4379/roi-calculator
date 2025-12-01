@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投資報酬率 (ROI) 計算機</title>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .calculator-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 350px;
+        }
+        h2 { text-align: center; color: #333; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #666; }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box; /* 確保 padding 不會撐大寬度 */
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover { background-color: #0056b3; }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .roi-text { font-size: 1.5em; font-weight: bold; color: #28a745; }
+    </style>
+</head>
+<body>
+
+<div class="calculator-card">
+    <h2>💰 投資報酬率計算機</h2>
+    
+    <div class="input-group">
+        <label>投入成本 (本金)</label>
+        <input type="number" id="cost" placeholder="例如：100000">
+    </div>
+
+    <div class="input-group">
+        <label>最終價值 (現在市值)</label>
+        <input type="number" id="finalValue" placeholder="例如：120000">
+    </div>
+
+    <button onclick="calculateROI()">開始計算</button>
+
+    <div class="result" id="resultArea" style="display:none;">
+        <p>您的投資報酬率 (ROI)</p>
+        <div class="roi-text" id="roiDisplay">0%</div>
+        <p id="profitDisplay"></p>
+    </div>
+</div>
+
+<script>
+    function calculateROI() {
+        // 1. 抓取使用者輸入的數字
+        const cost = parseFloat(document.getElementById('cost').value);
+        const finalValue = parseFloat(document.getElementById('finalValue').value);
+
+        // 2. 檢查是否有輸入
+        if (isNaN(cost) || isNaN(finalValue)) {
+            alert("請輸入正確的數字喔！");
+            return;
+        }
+
+        // 3. 計算邏輯： (最終價值 - 成本) / 成本 * 100
+        const profit = finalValue - cost;
+        const roi = (profit / cost) * 100;
+
+        // 4. 顯示結果
+        document.getElementById('resultArea').style.display = 'block';
+        document.getElementById('roiDisplay').innerText = roi.toFixed(2) + "%";
+        
+        // 根據賺賠改變顏色
+        const roiText = document.getElementById('roiDisplay');
+        if (roi >= 0) {
+            roiText.style.color = "#28a745"; // 賺錢綠色
+            document.getElementById('profitDisplay').innerText = "恭喜！獲利 $" + profit.toLocaleString();
+        } else {
+            roiText.style.color = "#dc3545"; // 賠錢紅色
+            document.getElementById('profitDisplay').innerText = "虧損 $" + Math.abs(profit).toLocaleString();
+        }
+    }
+</script>
+
+</body>
+</html>
